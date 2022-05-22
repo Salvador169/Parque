@@ -1,0 +1,52 @@
+{% extends 'base.html' %} <!--must be on the line 1-->
+
+<!--
+First test
+
+<h1>Hello World</h1>
+{{ request.user }} give us the user name
+{{ request.user.is_authenticated }} True is logged, False if not
+<p>This is a template</p>
+-->
+
+{% block content %}
+    <div>
+      <div class="section">
+        <div class="columns">
+          <div class="column is-7">
+            <h1 class="title has-text-centered">Nova plataforma</h1>
+            <h1 class="subtitle is-5 has-text-centered">
+              Simples, Intuitivo, Limpo.
+            </h1>
+            <p>
+              A plataforma online do Dia Aberto foi renovada pelos alunos em
+              âmbito do curso de Licenciatura de Engenharia Informática.
+            </p>
+          </div>
+          <div class="column is-4">
+          </div>
+        </div>
+      </div>
+      <div class="hero is-light">
+        <div class="hero-body">
+          <div class="columns">
+            <div class="column is-8">
+              <p>2019 Dia Aberto por <a>Grupo 9</a></p>
+              <small>
+                Contacto de suporte:
+                <a href="">suporte.dia.aberto@ualg.pt</a>
+              </small>
+            </div>
+            <div class="column">
+            </div>
+            <div class="column is-1" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form action="parque/">
+      <p>PARQUES:</p>
+      <input type="submit" value="Parques" />
+  </form>
+{% endblock %}
