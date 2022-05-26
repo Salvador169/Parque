@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+        {% include "main/includes/messages.html" %}
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 style="text-align: center">{{ parque.nome }}</h3>
+                </div>
+            </div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+        <div class="container">
+           <a href="/ocupar_lugar/{{ parque.id }}">
+               Ocupar lugar
+           </a>
+        </div>
+
+        <div class="container">
+            <a href="/liberar_lugar/{{ parque.id }}">
+               Liberar lugar
+           </a>
+        </div>
+
+        <br>
+        <div class="container">
+            <a href="/associar_lugar/{{ parque.id }}">
+               Associar lugar
+           </a>
+        </div>
+        <br>
+
+        <div class="container">
+            <h2>Lista de lugares</h2>
+
+            <div class="col-md-6">
+                {% for lugar in lugares %}
+                    {{ lugar.numero_do_lugar }}
+                {% endfor %}
+            </div>
+            <br>
+        </div>
+
+        <div class="container">
+           <a href="/sair_parque_form/{{ parque.id }}">
+               Sair de {{ parque.nome }}
+           </a>
+        </div>
+</body>
+</html>
