@@ -58,12 +58,12 @@ class SairParqueForm(forms.Form):
         else:
             raise ValidationError("Matrícula não existe.")
 
-        p = Pagamento.objects.filter(viaturaid=v)
-
-        if p.exists():
-            if p.estado_do_pagamento == "Pendente":
-                if not v.contratoid:
-                    raise ValidationError("Tem um pagamento pendente.")
+        # p = Pagamento.objects.filter(viaturaid=v)
+        #
+        # if p.exists():
+        #     if p.estado_do_pagamento == "Pendente":
+        #         if not v.contratoid:
+        #             raise ValidationError("Tem um pagamento pendente.")
 
         t = TabelaMatriculas.objects.values_list('formato')
         for formato in t:

@@ -1,8 +1,6 @@
 import random
 
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm

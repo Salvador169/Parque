@@ -14,6 +14,7 @@ class Parque(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True)  # Field name made lowercase.
     morada = models.CharField(db_column='Morada', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    foto = models.CharField(db_column='Foto', max_length=255, blank=True, null=True)
     capacidade = models.IntegerField(db_column='Capacidade')  # Field name made lowercase.
     zonas = models.IntegerField(db_column='Zonas')  # Field name made lowercase.
 
