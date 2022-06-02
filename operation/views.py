@@ -1,14 +1,15 @@
 import random
 
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from .forms import MatriculaForm, AssociarLugarForm
+from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm
 from .models import RegistoMovimento, Parque, Zona, Lugar, Viatura, Pagamento
 
 
 # Create your views here.
-
 
 def entrar_parque(request):
     return render(request=request,
@@ -19,18 +20,17 @@ def entrar_parque(request):
 def entrar_parque_form(request, parque_id):
     parques = Parque.objects.get(pk=parque_id)
     if request.method == "POST":
-        form = MatriculaForm(request.POST)
+        form = EntrarParqueForm(request.POST)
         if form.is_valid():
             messages.success(request, f"Entrou no parque com sucesso.")
-            r = RegistoMovimento(data_de_entrada=timezone.now(), matricula=form.cleaned_data.get("matricula"),
-                                 parqueid=parques)
+            r = RegistoMovimento(data_de_entrada=timezone.now(), matricula=form.cleaned_data.get("matricula"), parqueid=parques)
             r.save()
             v = Viatura(registo_movimentoid=r, matricula=form.cleaned_data.get("matricula"))
             v.save()
-            request.session['matricula'] = form.cleaned_data.get("matricula")
+
             return redirect("operation:index", parque_id=parque_id)
     else:
-        form = MatriculaForm
+        form = EntrarParqueForm
 
     return render(request,
                   "main/entrar_parque_form.html",
@@ -50,35 +50,15 @@ def index(request, parque_id):
 def sair_parque_form(request, parque_id):
     parques = Parque.objects.get(pk=parque_id)
     if request.method == "POST":
-        form = MatriculaForm(request.POST)
+        form = SairParqueForm(request.POST)
         if form.is_valid():
             v = Viatura.objects.filter(matricula=form.cleaned_data.get("matricula"))
 
-            if RegistoMovimento.objects.filter(matricula=form.cleaned_data.get("matricula")).exists():
-                r = RegistoMovimento(data_de_saida=timezone.now())
-                r.save()
-            else:
-                messages.error(request, f"Matrícula não existe.")
-                return redirect("operation:sair_parque_form")
-            if v.exists():
-                v.delete()
-            else:
-                messages.error(request, f"Matrícula não existe.")
-                return redirect("operation:sair_parque_form")
-            if not v.contratoid:
-                p = Pagamento.objects.filter(viaturaid=v)
-                if p.estado_do_pagamento is "Pendente":
-                    messages.error(request, f"Tem um pagamento pendente.")
-                    return redirect("operation:sair_parque_form")
-
-
-        request.session.pop('matricula', None)
-        request.session.modified = True
-        messages.success(request, f"Saiu do parque com sucesso.")
-        return redirect("operation:entrar_parque")
+            messages.success(request, f"Saiu do parque com sucesso.")
+            return redirect("operation:entrar_parque")
 
     else:
-        form = MatriculaForm
+        form = SairParqueForm
 
     return render(request,
                   "main/sair_parque_form.html",

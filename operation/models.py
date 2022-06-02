@@ -21,13 +21,6 @@ class Parque(models.Model):
         return self.nome + ", ID: " + str(self.id)
 
 
-class Administrador(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    parqueid = models.ForeignKey(Parque, models.CASCADE, db_column='ParqueID')  # Field name made lowercase.
-    nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    permissao = models.IntegerField(db_column='Permissao')  # Field name made lowercase.
-
-
 class Cliente(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True)  # Field name made lowercase.

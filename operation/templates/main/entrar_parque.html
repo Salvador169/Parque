@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <title>Selecionar parque</title>
 
-    {% include "main/includes/messages.html" %}
+    {% load static %}
+    <link href="{% static 'main/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'main/css/style.css' %}" rel="stylesheet">
 
-    <h2>Escolha o parque em que pretende entrar:</h2>
+</head>
+<body>
+
+  {% include "main/includes/messages.html" %}
+
+    <h2 class="text-center" style="padding: 1em">Escolha o parque em que pretende entrar:</h2>
 
     {% for parque in parques %}
         <div class="container">
@@ -16,8 +23,6 @@
         </div>
     {% endfor %}
 
-</head>
-<body>
 
 </body>
 </html>

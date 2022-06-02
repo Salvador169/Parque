@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Funcionario, Cliente, Viatura, Parque, RegistoMovimento, Contrato, Administrador, Zona, Lugar, \
+from .models import Funcionario, Cliente, Viatura, Parque, RegistoMovimento, Contrato, Zona, Lugar, \
     Pagamento, TabelaMatriculas, Reserva
 
 # Register your models here.
@@ -22,6 +22,5 @@ admin.site.register(RegistoMovimento)
 admin.site.register(Cliente)
 admin.site.register(Viatura)
 admin.site.register(Contrato)
-admin.site.register(Administrador)
 admin.site.register(Pagamento)
 

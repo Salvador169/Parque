@@ -5,40 +5,32 @@
     <title>{{ parques.nome }} - Sair</title>
 
     {% load static %}
+    <link href="{% static 'main/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'main/css/style.css' %}" rel="stylesheet">
 
-    {% block content %}
-
-        <div class="container">
-            <h3>Saindo de {{ parques.nome }}...</h3>
-        </div>
-
-        {% include "main/includes/messages.html" %}
-
-        <div class="container">
-            <form method="POST">
-                {% csrf_token %}
-
-                {% for field in form %}
-                <div class="fieldWrapper">
-                    {{ field.errors }}
-                    <p>Introduza a sua matrícula para sair do parque:</p>
-
-                    {{ field }}
-                    {% if field.help_text %}
-                         <p class="help">{{ field.help_text|safe }}</p>
-                    {% endif %}
-                </div>
-                    <br>
-                {% endfor %}
-
-
-                <button class="btn" style="background-color: lightblue; color: black" type="submit">Sair</button>
-                </form>
-        </div>
-
-    {% endblock %}
 </head>
 <body>
+
+<div class="container">
+    <h3>Saindo de {{ parques.nome }}...</h3>
+</div>
+
+    {% include "main/includes/messages.html" %}
+
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="container" style="padding: 0.5em">
+                 {{ form }}
+             </div>
+
+             <div class="container">
+                <button class="btn btn-primary" type="submit">Sair</button>
+            </div>
+        </form>
+        <button class="btn btn-danger" href="/index/{{ parques.id }}" type="button"><a href="/index/{{ parques.nome }}">Voltar</a></button>
+    </div>
 
 </body>
 </html>

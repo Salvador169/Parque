@@ -5,10 +5,13 @@
     <title>Desassociar Lugar</title>
 
     {% load static %}
+    <link href="{% static 'main/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'main/css/style.css' %}" rel="stylesheet">
 
-    {% block content %}
+</head>
+<body>
 
-        {% include "main/includes/messages.html" %}
+{% include "main/includes/messages.html" %}
 
         <div class="container">
             <form method="POST">
@@ -18,27 +21,13 @@
                     <h3>Desassociando um lugar em {{ parques.nome }}</h3>
                 </div>
 
-                {% for field in form %}
-                <div class="fieldWrapper">
-                    {{ field.errors }}
-
-                    {{ field.label }}
-                    {{ field|safe }}
-
-                    {% if field.help_text %}
-                         <p class="help">{{ field.help_text|safe }}</p>
-                    {% endif %}
-                </div>
-                    <br>
-                {% endfor %}
+                <div class="container" style="padding: 0.5em">
+                     {{ form }}
+                 </div>
 
                     <button class="btn" href="/index/{{ parques.id }}" style="background-color: lightblue; color: black" type="submit">Desassociar</button>
                 </form>
         </div>
-
-    {% endblock %}
-</head>
-<body>
 
 </body>
 </html>
