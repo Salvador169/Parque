@@ -6,20 +6,17 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from datetime import datetime
-from enum import unique
 from django.db import models
 
 class Parque(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
-    morada = models.CharField(db_column='Morada', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
-    cidade = models.CharField(db_column='Cidade', max_length=60, blank=True, null=True)
-    distrito = models.CharField(db_column='Distrito', max_length=30, blank=True, null=True)
-    codigo_postal = models.CharField(max_length=5, blank=True, null=True)
-    pais = models.CharField(db_column='Pais', max_length=50, blank=True, null=True)
     capacidade = models.IntegerField(db_column='Capacidade')  # Field name made lowercase.
     zonas = models.IntegerField(db_column='Zonas')  # Field name made lowercase.
     estado = models.CharField(db_column='Estado', max_length=50, blank=True, null=True)
+    morada = models.CharField(db_column='Morada', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
+    cidade = models.CharField(db_column='Cidade', max_length=60, blank=True, null=True)
+    codigo_postal = models.CharField(max_length=5, blank=True, null=True)
 
     def get_absolute_url(self):
         return f"/parque/{self.id}/"
@@ -27,6 +24,15 @@ class Parque(models.Model):
     @staticmethod
     def make_options():
         return (("Aberto","Aberto"),("Fechado","Fechado"),("Manutencao","Manutencao"))
+
+    # @staticmethod
+    # def make_options_cidade():
+    #     return (("Aveiro","Aveiro"),("Beja","Beja"),("Braga","Braga"),("Bragança","Bragança"),("Castelo Branco","Castelo Branco"),("Coimbra","Coimbra"),("Évora","Évora"),("Faro","Faro"),("Funchal","Funchal"),("Guarda","Guarda"),("Leiria","Leiria"),("Lisboa","Lisboa"),("Ponta Delgada","Ponta Delgada"),("Portalegre","Portalegre"),("Porto","Porto"),("Santarém","Santarém"),("Setúbal","Setúbal"),("Viana do Castelo","Viana do Castelo"),("Vila Real","Vila Real"),("Viseu","Viseu"))
+
+class Reclamacao(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    faturaid = models.IntegerField(db_column='FaturaID')  # Field name made lowercase.
+    reclamacao = models.CharField(db_column='Reclamacao', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
 class Administrador(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
@@ -93,7 +99,7 @@ class Zona(models.Model):
     tipo_de_zona = models.CharField(db_column='Estado', max_length=255, blank=True, null=True)
 
     def get_absolute_url(self):
-        return f"/parque/{self.parqueid}/zona/{self.id}/"
+        return f"/parque/{self.parqueid.id}/zona/{self.id}/"
 
     @staticmethod
     def make_options():
@@ -116,6 +122,9 @@ class Lugar(models.Model):
     reservaid = models.ForeignKey(Reserva, models.CASCADE, db_column='ReservaID', null=True)  # Field name made lowercase.
     numero_do_lugar = models.IntegerField(db_column='Numero do lugar')  # Field name made lowercase. Field renamed to remove unsuitable characters.
     estado = models.CharField(db_column='Estado', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    def get_absolute_url(self):
+        return f"/parque/{1}/zona/{self.zonaid.id}/lugar/{self.id}"
 
     @staticmethod
     def make_options():

@@ -12,10 +12,18 @@ from parque.views import (
     ZonaUpdateView,
     LugarCreateView,
     LugarListView,
+    LugarDetailView,
+    LugarDeleteView,
+    LugarUpdateView,
+    ReclamacaoCreateView,
+    ReclamacaoListView
 )
 
 app_name = 'parque'
 urlpatterns = [
+    path('reclamacao/', ReclamacaoListView.as_view(), name='reclamacao-list'),
+    path('reclamacao/create/', ReclamacaoCreateView.as_view(), name='reclamacao-create'),
+
     path('', ParqueListView.as_view(), name='parque-list'),
     path('<int:id>/', ParqueDetailView.as_view(), name='parque-detail'),
     path('create/', ParqueCreateView.as_view(), name='parque-create'),
@@ -29,7 +37,8 @@ urlpatterns = [
     path('<int:id>/zona/<int:pk>/update/', ZonaUpdateView.as_view(), name='zona-update'),
 
     path('<int:id>/zona/<int:pk>/lugar/', LugarListView.as_view(), name='lugar-list'),
-    #path('<int:id>/zona/<int:pk>/delete/', ZonaDeleteView.as_view(), name='zona-delete'),
+    path('<int:id>/zona/<int:pk>/lugar/<int:lugar>/', LugarDetailView.as_view(), name='lugar-detail'),
+    path('<int:id>/zona/<int:pk>/lugar/<int:lugar>/delete/', LugarDeleteView.as_view(), name='lugar-delete'),
     path('<int:id>/zona/<int:pk>/lugar/create/', LugarCreateView.as_view(), name='lugar-create'),
-    #path('<int:id>/zona/<int:pk>/update/', ZonaUpdateView.as_view(), name='zona-update'),
+    path('<int:id>/zona/<int:pk>/lugar/<int:lugar>/update/', LugarUpdateView.as_view(), name='lugar-update'),
 ]
