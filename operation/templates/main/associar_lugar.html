@@ -18,14 +18,17 @@
                 {% csrf_token %}
 
                 <div class="container">
-                    <h3>Associando um lugar em {{ parques.nome }}</h3>
+                    <h3 style="padding: 2em">Associando um lugar em {{ parques.nome }}</h3>
                 </div>
 
                 <div class="container" style="padding: 0.5em">
                      {{ form }}
                  </div>
 
-                    <button class="btn" href="/index/{{ parques.id }}" style="background-color: lightblue; color: black" type="submit">Associar</button>
+                <div class="container-fluid" style="padding: 2em">
+                    <a class="btn btn-danger" href="/index/{{ parques.id }}" style="color: white; margin-right: 1em" type="submit">Voltar</a>
+                    <button class="btn btn-primary" href="/index/{{ parques.id }}" type="submit">Associar</button>
+                </div>
                 </form>
         </div>
 

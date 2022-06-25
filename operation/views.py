@@ -3,7 +3,7 @@ import random
 from django.contrib import messages
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm
+from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm, DesassociarLugarForm
 from .models import RegistoMovimento, Parque, Zona, Lugar, Viatura, Pagamento
 
 
@@ -45,6 +45,7 @@ def index(request, parque_id):
                   context={"parque": parque, "zonas": zonas, "lugares": lugares})
 
 
+# Ver isto melhor
 def sair_parque_form(request, parque_id):
     parques = Parque.objects.get(pk=parque_id)
     if request.method == "POST":
@@ -75,7 +76,7 @@ def ocupar_lugar(request, parque_id, lugar_id):
         messages.error(request, f"Não existem lugares livres no parque.")
         return redirect("operation:index", parque_id=parque_id)
 
-    lugar = Lugar.objects.filter(pk=lugar_id)
+    lugar = Lugar.objects.get(numero_do_lugar=lugar_id)
     lugar.estado = "Ocupado"
     lugar.save()
 
@@ -96,7 +97,7 @@ def liberar_lugar(request, parque_id, lugar_id):
         messages.error(request, f"Não existem lugares ocupados no parque.")
         return redirect("operation:index", parque_id=parque_id)
 
-    lugar = Lugar.objects.filter(pk=lugar_id)
+    lugar = Lugar.objects.get(numero_do_lugar=lugar_id)
     lugar.estado = "Livre"
     lugar.save()
 
@@ -107,22 +108,27 @@ def liberar_lugar(request, parque_id, lugar_id):
 
 def associar_lugar(request, parque_id, zona_id):
     parques = Parque.objects.get(pk=parque_id)
-    zona = Zona.objects.get(pk=zona_id)
+    zona = Zona.objects.get(numero_da_zona=zona_id)
     if request.method == "POST":
-        form = AssociarLugarForm(request.POST)
+        form = AssociarLugarForm(zona, request.POST)
         if form.is_valid():
 
             messages.success(request, f"Associou o lugar com sucesso.")
 
+            l = form.cleaned_data.get("lugar")
+            if l.zonaid is not None:
+                old_zona_number = l.zonaid.numero_da_zona
+                old_zona = Zona.objects.get(numero_da_zona=old_zona_number)
+                old_zona.lugares = old_zona.lugares - 1
+                old_zona.save()
             zona.lugares = zona.lugares + 1
             zona.save()
-            l = form.cleaned_data.get("lugar")
             l.zonaid = zona
             l.save()
 
             return redirect("operation:index", parque_id=parque_id)
     else:
-        form = AssociarLugarForm
+        form = AssociarLugarForm(zona)
 
     return render(request,
                   "main/associar_lugar.html",
@@ -131,9 +137,9 @@ def associar_lugar(request, parque_id, zona_id):
 
 def desassociar_lugar(request, parque_id, zona_id):
     parques = Parque.objects.get(pk=parque_id)
-    zona = Zona.objects.get(pk=zona_id)
+    zona = Zona.objects.get(numero_da_zona=zona_id)
     if request.method == "POST":
-        form = AssociarLugarForm(request.POST)
+        form = DesassociarLugarForm(zona, request.POST)
         if form.is_valid():
             messages.success(request, f"Associou o lugar com sucesso.")
 
@@ -145,7 +151,7 @@ def desassociar_lugar(request, parque_id, zona_id):
 
             return redirect("operation:index", parque_id=parque_id)
     else:
-        form = AssociarLugarForm
+        form = DesassociarLugarForm(zona)
 
     return render(request,
                   "main/desassociar_lugar.html",

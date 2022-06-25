@@ -14,6 +14,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
+
+                       <a href="/sair_parque_form/{{ parque.id }}">
+                           <button style="margin-top: 1em" class="btn btn-danger">Sair de {{ parque.nome }}</button>
+                       </a>
+
                     <h3 style="text-align: center">{{ parque.nome }}</h3>
                 </div>
             </div>
@@ -22,40 +27,66 @@
         {% include "main/includes/messages.html" %}
 
         <div class="container">
-           <a href="/ocupar_lugar/{{ parque.id }}">
-               Ocupar lugar
-           </a>
+            <div class="row">
+                <h2 style="padding: 2em">Lista de zonas</h2>
+                    {% for zona in zonas %}
+                    <div class="col-md-3" style="padding: 1em">
+                                <div class="h-100 border border-dark rounded p-4">
+                                    {{ zona.numero_da_zona }}
+                                    <br>
+                                    Lugares:  {{ zona.lugares }}
+                                    <br>
+                                    <div class="container-fluid text-center">
+                                        <a class="btn btn-success" style="color: white;margin-bottom: 1em; margin-top: 1em" href="/associar_lugar/{{ parque.id }}/{{ zona.numero_da_zona }}">
+                                            Associar lugar
+                                        </a>
+                                        <a class="btn btn-danger" href="/desassociar_lugar/{{ parque.id }}/{{ zona.numero_da_zona }}">
+                                            Desassociar lugar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                    {% endfor %}
+                <br>
+            </div>
         </div>
 
         <div class="container">
-            <a href="/liberar_lugar/{{ parque.id }}">
-               Liberar lugar
-           </a>
-        </div>
+            <div class="row">
+                <h2 style="padding: 2em">Lista de lugares</h2>
 
-        <br>
-        <div class="container">
-            <a href="/associar_lugar/{{ parque.id }}">
-               Associar lugar
-           </a>
-        </div>
-        <br>
+                    {% for lugar in lugares %}
+                    <br>
+                        {% if lugar.estado == "Ocupado"%}
+                            <div class="col-md-2" style="padding: 1em">
+                                <div class="h-100 border border-dark rounded p-4">
+                                    {{ lugar.numero_do_lugar }}
+                                    <p style="color: red">Ocupado</p>
+                                    <a href="/liberar_lugar/{{ parque.id }}/{{ lugar.numero_do_lugar }}">
+                                        Liberar lugar
+                                    </a>
+                                    <br>
+                                </div>
+                            </div>
 
-        <div class="container">
-            <h2>Lista de lugares</h2>
+                        {% endif%}
 
-            <div class="col-md-6">
-                {% for lugar in lugares %}
-                    {{ lugar.numero_do_lugar }}
-                {% endfor %}
+                        {% if lugar.estado == "Livre"%}
+                        <div class="col-md-2" style="padding: 1em">
+                            <div class="h-100 border border-dark rounded p-4">
+                                {{ lugar.numero_do_lugar }}
+                                <p style="color: green">Livre</p>
+                                <a href="/ocupar_lugar/{{ parque.id }}/{{ lugar.numero_do_lugar }}">
+                                    Ocupar lugar
+                                </a>
+                            </div>
+                        </div>
+                        {% endif%}
+
+                    {% endfor %}
             </div>
             <br>
         </div>
 
-        <div class="container">
-           <a href="/sair_parque_form/{{ parque.id }}">
-               Sair de {{ parque.nome }}
-           </a>
-        </div>
 </body>
 </html>

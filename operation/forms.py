@@ -9,7 +9,7 @@ from .models import RegistoMovimento, Viatura
 
 
 class EntrarParqueForm(forms.Form):
-    matricula = forms.CharField(label=None)
+    matricula = forms.CharField(label="Matrícula")
 
     def clean_matricula(self):
         matricula = self.cleaned_data["matricula"]
@@ -38,7 +38,7 @@ class EntrarParqueForm(forms.Form):
 
 
 class SairParqueForm(forms.Form):
-    matricula = forms.CharField(label=None)
+    matricula = forms.CharField(label="Matrícula")
 
     def clean_matricula(self):
         matricula = self.cleaned_data["matricula"]
@@ -83,6 +83,23 @@ class SairParqueForm(forms.Form):
 
 class AssociarLugarForm(forms.Form):
     lugar = forms.ModelChoiceField(queryset=Lugar.objects.all(), widget=forms.Select)
+
+    def __init__(self, zona, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["lugar"].queryset = Lugar.objects.exclude(zonaid=zona)
+
+    def clean_lugar(self):
+        lugar = self.cleaned_data["lugar"]
+
+        return lugar
+
+
+class DesassociarLugarForm(forms.Form):
+    lugar = forms.ModelChoiceField(queryset=Lugar.objects.all(), widget=forms.Select)
+
+    def __init__(self, zona, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["lugar"].queryset = Lugar.objects.filter(zonaid=zona)
 
     def clean_lugar(self):
         lugar = self.cleaned_data["lugar"]

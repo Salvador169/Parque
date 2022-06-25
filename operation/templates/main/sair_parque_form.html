@@ -12,25 +12,32 @@
 <body>
 
 <div class="container">
-    <h3>Saindo de {{ parques.nome }}...</h3>
+    <h3 style="text-align: center; padding: 1em">Saindo de {{ parques.nome }}...</h3>
 </div>
 
     {% include "main/includes/messages.html" %}
 
-    <div class="container">
-        <form method="POST">
-            {% csrf_token %}
+    <div class="container-fluid" style="padding: 0.5em">
+             <div class="row">
 
-            <div class="container" style="padding: 0.5em">
-                 {{ form }}
+                 <div class="col-md-4">
+                     </div>
+                 <div class="col-md-4 text-center" style="padding: 2em">
+                     <form method="POST">
+                        {% csrf_token %}
+
+                         {{ form }}
+                         <br>
+                         <a class="btn btn-danger" style="color: white; margin-right: 2em; margin-top: 2em" href="/index/{{ parques.id }}">Voltar</a>
+                         <button class="btn btn-primary" style="margin-top: 2em" type="submit">Sair</button>
+                     </form>
+
+                 <div>
+                 <div class="col-md-4">
+                 </div>
+
              </div>
-
-             <div class="container">
-                <button class="btn btn-primary" type="submit">Sair</button>
-            </div>
-        </form>
-        <a href="/index/{{ parques.id }}" style="color: white"><button class="btn btn-danger">Voltar</button></a>
-    </div>
+         </div>
 
 </body>
 </html>

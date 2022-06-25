@@ -19,7 +19,7 @@ class Parque(models.Model):
     zonas = models.IntegerField(db_column='Zonas')  # Field name made lowercase.
 
     def __str__(self):
-        return self.nome + ", ID: " + str(self.id)
+        return self.nome
 
 
 class Cliente(models.Model):
@@ -71,7 +71,7 @@ class Viatura(models.Model):
     matricula = models.CharField(db_column='Matricula', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     def __str__(self):
-        return str(self.registo_movimentoid)
+        return str(self.matricula)
 
 class Zona(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
@@ -80,7 +80,7 @@ class Zona(models.Model):
     lugares = models.IntegerField(db_column='Lugares')  # Field name made lowercase.
 
     def __str__(self):
-        return "ID: " + str(self.id) + ", Parque: " + str(self.parqueid)
+        return "Numero da zona: " + str(self.numero_da_zona) + ", Parque: " + str(self.parqueid)
 
 
 class Reserva(models.Model):
@@ -93,7 +93,7 @@ class Reserva(models.Model):
 
 class Lugar(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    zonaid = models.ForeignKey(Zona, models.CASCADE, db_column='ZonaID')  # Field name made lowercase.
+    zonaid = models.ForeignKey(Zona, models.CASCADE, db_column='ZonaID', blank=True, null=True)  # Field name made lowercase.
     contratoid = models.ForeignKey(Contrato, models.CASCADE, db_column='ContratoID', blank=True, null=True)  # Field name made lowercase.
     viaturaid = models.ForeignKey(Viatura, models.CASCADE, db_column='ViaturaID', blank=True, null=True)  # Field name made lowercase.
     reservaid = models.ForeignKey(Reserva, models.CASCADE, db_column='ReservaID', blank=True, null=True)  # Field name made lowercase.
@@ -101,7 +101,7 @@ class Lugar(models.Model):
     estado = models.CharField(db_column='Estado', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     def __str__(self):
-        return "ID: " + str(self.id) + ", Zona " + str(self.zonaid) + ", Estado: " + str(self.estado)
+        return "Lugar: " + str(self.numero_do_lugar) + ", Zona " + str(self.zonaid) + ", Estado: " + str(self.estado)
 
 
 class Pagamento(models.Model):
