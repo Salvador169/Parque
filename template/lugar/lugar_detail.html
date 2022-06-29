@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>Número do lugar: {{ object.numero_do_lugar }}</p>
+<p>Estado: {{ object.estado }}</p>
+
+<hr>
+
+<form action="update/">
+    <p>To update go here:</p>
+    <input type="submit" value="Update" />
+</form>
+
+<hr>
+
+<form action="delete/">
+    <p>To delete go here:</p>
+    <input type="submit" value="Delete" />
+</form>
+
+<hr>
+
+<br>
+
+<form action="../">
+    <input type="submit" value="Go Back" />
+</form>
+<!--<form action="zona/">
+    <p>To see zones go here:</p>
+    <input type="submit" value="Zones" />
+</form>-->
+{% endblock %}

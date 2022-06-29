@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>About</h1>
+
+<h3>{{ title|capfirst|upper }}</h3> <!--capfirst always put the first letter on CAPS, upper puts all letters on CAPS-->
+<p>This is a template</p>
+
+{{ my_html|safe }}
+
+<p>
+{{ my_number }}
+{{ my_list }}
+</p>
+
+<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+</ul>
+
+<ul>
+    {% for my_sub_item in my_list %}
+        {% if my_sub_item == 312 %}
+            <li>{{ forloop.counter }} - {{ my_sub_item|add:22 }}</li>
+        {% elif my_sub_item == "abc" %}
+            <li>Hello world</li>
+        {% else %}
+            <li>{{ forloop.counter }} - {{ my_sub_item }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
