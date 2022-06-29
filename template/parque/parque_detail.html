@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>Nome: {{ object.nome }}</p>
+<p>Capacidade: {{ object.capacidade }}</p>
+<p>Zonas: {{ object.zonas }}</p>
+<p>Morada: {{ object.morada }}</p>
+<p>País: {{ object.pais }}</p>
+<p>Cidade: {{ object.cidade }}</p>
+<p>Distrito: {{ object.distrito }}</p>
+<p>Código Postal: {{ object.codigo_postal }}</p>
+<p>Estado: {{ object.estado }}</p>
+
+<hr>
+
+<form action="delete/">
+    <p>To delete go here:</p>
+    <input type="submit" value="Delete" />
+</form>
+
+<hr>
+
+<form action="update/">
+    <p>To update go here:</p>
+    <input type="submit" value="Update" />
+</form>
+
+<hr>
+
+<form action="zona/">
+    <p>To see zones go here:</p>
+    <input type="submit" value="Zones" />
+</form>
+
+{% endblock %}

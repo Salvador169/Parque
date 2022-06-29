@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for instance in object_list %}
+<p>-> <a href='{{ instance.get_absolute_url }}'>{{ instance.id }}</a> Lugares:{{ instance.lugares }}, 
+    <br>
+    Número da Zona:{{ instance.numero_da_zona }}
+    <br>
+    Tipo da Zona:{{ instance.tipo_de_zona }}
+</p>
+
+
+<form action="{{ instance.id }}/update">
+    <p>To update go here:</p>
+    <input type="submit" value="Update" />
+</form>
+
+<form action="{{ instance.id }}/delete/">
+    <p>To delete go here:</p>
+    <input type="submit" value="Delete" />
+</form>
+{% endfor %}
+
+<br>
+<hr>
+
+<form action="create/">
+    <input type="submit" value="Create a Zona" />
+</form>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for instance in object_list %}
+<p>-> <a href='{{ instance.get_absolute_url }}'>{{ instance.id }}</a> - Nome do Parque: {{ instance.nome }}, <br> Morada do Parque: {{ instance.morada }}, <br> Capacidade do Parque: {{ instance.capacidade }}, <br> Número de Zonas do Parque:{{ instance.zonas }}</p>
+
+{% endfor %}
+
+<form action="create/">
+    <input type="submit" value="Create a Park" />
+</form>
+
+{% endblock %}
