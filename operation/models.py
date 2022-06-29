@@ -119,3 +119,17 @@ class TabelaMatriculas(models.Model):
 
     def __str__(self):
         return "País: " + str(self.pais) + ", Formato: " + str(self.formato)
+
+
+class Fatura(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    pagamentoid = models.ForeignKey(Pagamento, models.CASCADE, db_column='PagamentoID', blank=True, null=True)  # Field name made lowercase.
+    clienteid = models.ForeignKey(Cliente, models.CASCADE, db_column='ClienteID', blank=True, null=True)  # Field name made lowercase.
+    nomeEmpresa = models.TextField(db_column='NomeEmpresa')  # Field name made lowercase. Field renamed to remove unsuitable characters. This field type is a guess.
+    moradaEmpresa = models.TextField(db_column='MoradaEmpresa')  # Field name made lowercase. Field renamed to remove unsuitable characters. This field type is a guess.
+    nifEmpresa = models.IntegerField(db_column='NIFEmpresa', blank=True, null=True)  # Field name made lowercase.
+
+class Reclamacao(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    faturaid = models.ForeignKey(Fatura, models.CASCADE, db_column='FaturaID', blank=True, null=True)  # Field name made lowercase.
+    reclamacao = models.CharField(db_column='Reclamacao', max_length=255, blank=True, null=True)  # Field name made lowercase.

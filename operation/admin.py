@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Funcionario, Cliente, Viatura, Parque, RegistoMovimento, Contrato, Zona, Lugar, \
-    Pagamento, TabelaMatriculas, Reserva
+    Pagamento, TabelaMatriculas, Reserva, Fatura, Reclamacao
 
 # Register your models here.
 
@@ -23,4 +23,6 @@ admin.site.register(Cliente)
 admin.site.register(Viatura)
 admin.site.register(Contrato)
 admin.site.register(Pagamento)
+admin.site.register(Fatura)
+admin.site.register(Reclamacao)
 

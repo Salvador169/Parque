@@ -20,6 +20,7 @@
                        </a>
 
                     <h3 style="text-align: center">{{ parque.nome }}</h3>
+
                 </div>
             </div>
         </div>
@@ -81,12 +82,24 @@
                                 </a>
                             </div>
                         </div>
-                        {% endif%}
+                        {% endif %}
 
                     {% endfor %}
             </div>
             <br>
         </div>
+
+        {% for fatura in faturas %}
+        <a class="btn btn-primary" style="margin-top: 1em; margin-left: 1em; color: white" href="/consultar_entradas/{{ parque.id }}/{{ fatura.id }}">
+            Reclamar de {{ fatura.nomeEmpresa }}
+        </a>
+        {% endfor %}
+
+        {% for reclamacao in reclamacoes %}
+         <a class="btn btn-primary" style="margin-top: 1em; margin-left: 1em; color: white" href="fatura/{{ fatura.id }}/reclamar/">
+                Processar reclamação de {{ reclamacao.faturaid }}
+         </a>
+        {% endfor %}
 
 </body>
 </html>

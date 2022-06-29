@@ -4,7 +4,7 @@ import re
 
 from django.utils import timezone
 
-from .models import TabelaMatriculas, Zona, Lugar, Pagamento
+from .models import TabelaMatriculas, Zona, Lugar, Pagamento, Reclamacao
 from .models import RegistoMovimento, Viatura
 
 
@@ -82,11 +82,33 @@ class SairParqueForm(forms.Form):
 
 
 class AssociarLugarForm(forms.Form):
+    matricula = forms.CharField(label="Matrícula")
     lugar = forms.ModelChoiceField(queryset=Lugar.objects.all(), widget=forms.Select)
 
     def __init__(self, zona, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["lugar"].queryset = Lugar.objects.exclude(zonaid=zona)
+        self.fields["lugar"].queryset = Lugar.objects.filter(zonaid=zona, estado="Livre")
+
+    def clean_matricula(self):
+        matricula = self.cleaned_data["matricula"]
+
+        if len(matricula) > 10:
+            raise ValidationError("Matrícula deve conter menos de 11 caracteres.")
+
+        t = TabelaMatriculas.objects.values_list('formato')
+        for formato in t:
+            formato = str(formato)
+            formato = formato.replace("'", "")
+            formato = formato.replace(",", "")
+            formato = formato.replace("(", "")
+            formato = formato.replace(")", "")
+            pattern = re.compile(formato)
+            if pattern.match(matricula) is not None:
+                break
+            else:
+                raise ValidationError("Matrícula com formato incorreto.")
+
+        return matricula
 
     def clean_lugar(self):
         lugar = self.cleaned_data["lugar"]
@@ -99,7 +121,28 @@ class DesassociarLugarForm(forms.Form):
 
     def __init__(self, zona, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["lugar"].queryset = Lugar.objects.filter(zonaid=zona)
+        self.fields["lugar"].queryset = Lugar.objects.filter(zonaid=zona, estado="Ocupado")
+
+    def clean_matricula(self):
+        matricula = self.cleaned_data["matricula"]
+
+        if len(matricula) > 10:
+            raise ValidationError("Matrícula deve conter menos de 11 caracteres.")
+
+        t = TabelaMatriculas.objects.values_list('formato')
+        for formato in t:
+            formato = str(formato)
+            formato = formato.replace("'", "")
+            formato = formato.replace(",", "")
+            formato = formato.replace("(", "")
+            formato = formato.replace(")", "")
+            pattern = re.compile(formato)
+            if pattern.match(matricula) is not None:
+                break
+            else:
+                raise ValidationError("Matrícula com formato incorreto.")
+
+        return matricula
 
     def clean_lugar(self):
         lugar = self.cleaned_data["lugar"]
@@ -107,4 +150,16 @@ class DesassociarLugarForm(forms.Form):
         return lugar
 
 
+class ReclamacaoModelForm(forms.ModelForm):
+    reclamacao = forms.CharField(
+        max_length=120,
+        widget=forms.TextInput(attrs={'size': '100', 'placeholder':'Escreva aqui a sua reclamação'}),
+        required=True
+        )
+
+    class Meta:
+        model = Reclamacao
+        fields = [
+            'reclamacao'
+        ]
 

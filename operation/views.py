@@ -3,8 +3,11 @@ import random
 from django.contrib import messages
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm, DesassociarLugarForm
-from .models import RegistoMovimento, Parque, Zona, Lugar, Viatura, Pagamento
+from django.views import View
+from django.views.generic import CreateView
+
+from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm, DesassociarLugarForm, ReclamacaoModelForm
+from .models import RegistoMovimento, Parque, Zona, Lugar, Viatura, Pagamento, Reclamacao, Fatura
 
 
 # Create your views here.
@@ -39,10 +42,12 @@ def index(request, parque_id):
     parque= Parque.objects.get(pk=parque_id)
     zonas = Zona.objects.filter(parqueid=parque)
     lugares = Lugar.objects.all()
+    faturas = Fatura.objects.all()
+    reclamacoes = Reclamacao.objects.all()
 
     return render(request=request,
                   template_name="main/index.html",
-                  context={"parque": parque, "zonas": zonas, "lugares": lugares})
+                  context={"parque": parque, "zonas": zonas, "lugares": lugares, "faturas": faturas, "reclamacoes": reclamacoes})
 
 
 # Ver isto melhor
@@ -114,16 +119,10 @@ def associar_lugar(request, parque_id, zona_id):
         if form.is_valid():
 
             messages.success(request, f"Associou o lugar com sucesso.")
-
             l = form.cleaned_data.get("lugar")
-            if l.zonaid is not None:
-                old_zona_number = l.zonaid.numero_da_zona
-                old_zona = Zona.objects.get(numero_da_zona=old_zona_number)
-                old_zona.lugares = old_zona.lugares - 1
-                old_zona.save()
-            zona.lugares = zona.lugares + 1
-            zona.save()
-            l.zonaid = zona
+            m = form.cleaned_data.get("matricula")
+            v = Viatura.objects.get(matricula=m)
+            l.viaturaid = v
             l.save()
 
             return redirect("operation:index", parque_id=parque_id)
@@ -141,12 +140,10 @@ def desassociar_lugar(request, parque_id, zona_id):
     if request.method == "POST":
         form = DesassociarLugarForm(zona, request.POST)
         if form.is_valid():
-            messages.success(request, f"Associou o lugar com sucesso.")
+            messages.success(request, f"Desassociou o lugar com sucesso.")
 
-            zona.lugares = zona.lugares - 1
-            zona.save()
             l = form.cleaned_data.get("lugar")
-            l.zonaid = None
+            l.viaturaid = None
             l.save()
 
             return redirect("operation:index", parque_id=parque_id)
@@ -156,3 +153,57 @@ def desassociar_lugar(request, parque_id, zona_id):
     return render(request,
                   "main/desassociar_lugar.html",
                   context={"form": form, "parques": parques})
+
+
+def consultar_entradas(request, parque_id, fatura_id):
+    parques = Parque.objects.get(pk=parque_id)
+    fatura = Fatura.objects.get(id=fatura_id)
+    p = fatura.pagamentoid
+    v = p.viaturaid
+    registos = RegistoMovimento.objects.filter(matricula=v.matricula)
+
+    return render(request=request,
+                  template_name="main/consultar_entradas.html",
+                  context={"parques": parques, "fatura": fatura, "registos": registos})
+
+
+def fazer_reclamacao(request, parque_id, fatura_id):
+    parques = Parque.objects.get(pk=parque_id)
+    fatura = Fatura.objects.get(id=fatura_id)
+
+    if request.method == "POST":
+        form = ReclamacaoModelForm(request.POST)
+        if form.is_valid():
+            messages.success(request, f"Fez a reclamação com sucesso.")
+
+            reclamacao = form.save(commit=False)
+            reclamacao.faturaid = fatura
+            reclamacao.save()
+
+            return redirect("operation:consultar_entradas", parque_id=parque_id, fatura_id=fatura_id)
+    else:
+        form = ReclamacaoModelForm
+
+    return render(request=request,
+                  template_name="main/fazer_reclamacao.html",
+                  context={"form": form, "parques": parques, "fatura": fatura})
+
+
+def consultar_reclamacoes(request, parque_id, fatura_id):
+    parques = Parque.objects.get(pk=parque_id)
+    fatura = Fatura.objects.get(id=fatura_id)
+    p = fatura.pagamentoid
+    v = p.viaturaid
+    registos = RegistoMovimento.objects.filter(matricula=v.matricula)
+
+    return render(request=request,
+                  template_name="main/consultar_entradas.html",
+                  context={"parques": parques, "fatura": fatura, "registos": registos})
+
+class ReclamacaoListView(View):
+    template_name = 'reclamacao_list.html'
+    queryset = Reclamacao.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        context = {"object_list": self.queryset}
+        return render(request, self.template_name, context)

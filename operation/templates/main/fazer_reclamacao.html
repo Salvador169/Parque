@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Desassociar Lugar</title>
+    <title>Fazer reclamação</title>
 
     {% load static %}
     <link href="{% static 'main/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -11,14 +11,12 @@
 </head>
 <body>
 
-{% include "main/includes/messages.html" %}
-
         <div class="container">
             <form method="POST">
                 {% csrf_token %}
 
                 <div class="container">
-                    <h3 style="padding: 2em">Desassociando um lugar em {{ parques.nome }}</h3>
+                    <h3 style="padding: 2em">Fazer reclamação</h3>
                 </div>
 
                 <div class="container" style="padding: 0.5em">
@@ -26,8 +24,8 @@
                  </div>
 
                 <div class="container-fluid" style="padding: 2em">
-                    <a class="btn btn-danger" href="/index/{{ parques.id }}" style="color: white; margin-right: 1em" type="submit">Voltar</a>
-                    <button class="btn btn-primary" href="/index/{{ parques.id }}" type="submit">Desassociar</button>
+                    <a class="btn btn-danger" href="/consultar_entradas/{{ parques.id }}/{{ fatura.id}}" style="color: white; margin-right: 1em" type="submit">Voltar</a>
+                    <button class="btn btn-primary" href="/consultar_entradas/{{ parques.id }}/{{ fatura.id}}" type="submit">Enviar reclamação</button>
                 </div>
                 </form>
         </div>
