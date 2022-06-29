@@ -1,0 +1,8 @@
+{% block content %}
+<form method="POST"> {% csrf_token %}
+    {{form.as_p}}
+    <p>{{price}}€</p>
+    <input type="submit" value="Save"/>
+</form>
+{% endblock %}
+<a class="btn btn-info btn-sm" href="{% url 'PaymentManagement:options' %}">Voltar à página principal</a>
