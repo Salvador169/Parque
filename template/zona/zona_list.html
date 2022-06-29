@@ -1,32 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load render_table from django_tables2 %}
+<html>
+    <head>
+    </head>
+    <body>
+        {% render_table table %}
 
-{% for instance in object_list %}
-<p>-> <a href='{{ instance.get_absolute_url }}'>{{ instance.id }}</a> Lugares:{{ instance.lugares }}, 
-    <br>
-    Número da Zona:{{ instance.numero_da_zona }}
-    <br>
-    Tipo da Zona:{{ instance.tipo_de_zona }}
-</p>
-
-
-<form action="{{ instance.id }}/update">
-    <p>To update go here:</p>
-    <input type="submit" value="Update" />
-</form>
-
-<form action="{{ instance.id }}/delete/">
-    <p>To delete go here:</p>
-    <input type="submit" value="Delete" />
-</form>
-{% endfor %}
-
-<br>
-<hr>
-
-<form action="create/">
-    <input type="submit" value="Create a Zona" />
-</form>
-
+        <br>
+        
+        <form action="create/">
+            <input type="submit" value="Criar uma zona" />
+        </form>
+        
+        <br>
+        
+        <form action="../">
+            <input type="submit" value="Voltar" />
+        </form>
+    </body>
+</html>
 {% endblock %}
+
+<!--{% for instance in object_list %}
+    <p>-> <a href='{{ instance.get_absolute_url }}'>{{ instance.id }}</a> - Nome do Parque: {{ instance.nome }}, <br> Morada do Parque: {{ instance.morada }}, <br> Capacidade do Parque: {{ instance.capacidade }}, <br> Número de Zonas do Parque:{{ instance.zonas }}</p>
+    
+    {% endfor %}
+    
+    -->

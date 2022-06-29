@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load render_table from django_tables2 %}
+<html>
+    <head>
+    </head>
+    <body>
+        {% render_table table %}
 
-{% for instance in object_list %}
-<p>-> <a href='{{ instance.get_absolute_url }}'>{{ instance.id }}</a> - Nome do Parque: {{ instance.nome }}, <br> Morada do Parque: {{ instance.morada }}, <br> Capacidade do Parque: {{ instance.capacidade }}, <br> Número de Zonas do Parque:{{ instance.zonas }}</p>
-
-{% endfor %}
-
-<form action="create/">
-    <input type="submit" value="Create a Park" />
-</form>
-
+        <br>
+        
+        <form action="create/">
+            <input type="submit" value="Create a Park" />
+        </form>
+        
+        <br>
+        
+        <form action="../">
+            <input type="submit" value="Go Back" />
+        </form>
+    </body>
+</html>
 {% endblock %}
+
+<!--{% for instance in object_list %}
+    <p>-> <a href='{{ instance.get_absolute_url }}'>{{ instance.id }}</a> - Nome do Parque: {{ instance.nome }}, <br> Morada do Parque: {{ instance.morada }}, <br> Capacidade do Parque: {{ instance.capacidade }}, <br> Número de Zonas do Parque:{{ instance.zonas }}</p>
+    
+    {% endfor %}
+    
+    -->
