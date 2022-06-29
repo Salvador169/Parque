@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'clear_cache',
     'PaymentManagement.apps.PaymentManagementConfig',
     'Index.apps.IndexConfig',
+    'operation.apps.OperationConfig'
 ]
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
