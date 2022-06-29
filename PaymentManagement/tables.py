@@ -12,7 +12,9 @@ class ContratosTable(django_tables.Table):
     data_de_termino = django_tables.Column('Data de Termino')
     periodicidade = django_tables.Column('Periodicidade' ,empty_values=())
     # ver = django_tables.LinkColumn('contrato:contrato-detail', text='View', args=['record.id'])
-    editar = django_tables.TemplateColumn(template_name='my_column.html')
+    editar = django_tables.TemplateColumn(template_name='edit.html')
+    apagar = django_tables.TemplateColumn(template_name='delete.html')
+    validar = django_tables.TemplateColumn(template_name='validate.html')
 
     class Meta:
         model = Contrato

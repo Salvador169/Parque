@@ -1,14 +1,15 @@
+<a class="btn btn-info btn-sm" href="{% url 'PaymentManagement:options' %}">Voltar à página principal</a>
 <p><b>Nome do cliente:</b> {{contrato.clienteid.nome}}</p>
 <p><b>Nome do parque:</b> {{contrato.parqueid.nome}}</p>
 <p><b>Data de início do contrato:</b> {{contrato.data_de_inicio}}</p>
 <p><b>Data de término do contrato:</b> {{contrato.data_de_termino}}</p>
 <p><b>Periodicidade:</b> {{contrato.periodicidadeid.periodicidade}}</p>
-<p><b>Dias:</b>{% if contrato.periodicidadeid.periodicidade == "semanal"%}
+    {% if contrato.periodicidadeid.periodicidade == "semanal"%}
+    <p><b>Dias:</b>
     {% for dia in dias %}
     {{dia.nome}},
     {% endfor %}
     {% endif %}</p>
-<p><b>Lugar:</b>{% for lugar in lugares %}
-    {{lugar.numero_do_lugar}},
-    {% endfor %}</p>
-<a href={% url 'contrato:contrato-delete' id=contrato.id %}>Delete</a>
+<p><b>Lugar:</b> {{lugar.numero_do_lugar}}</p>
+<p><b>Matricula:</b> {{contrato.matricula}}</p>
+<a class="btn btn-info btn-sm" href={% url 'PaymentManagement:contrato-delete' id=contrato.id %}>Delete</a>

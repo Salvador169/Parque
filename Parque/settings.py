@@ -16,7 +16,7 @@ from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+STRIPE_SECRET_KEY="pk_test_lLS9sEmL8to3FXiLDVSCW4rZ"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -40,10 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'django_tables2',
-    'notifications',
     'clear_cache',
-    'notificacoes.apps.NotificacoesConfig',
-    'utilizadores.apps.UtilizadoresConfig',
     'PaymentManagement.apps.PaymentManagementConfig',
     'Index.apps.IndexConfig',
 ]

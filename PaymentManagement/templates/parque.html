@@ -1,0 +1,5 @@
+<h1>Escolha o parque onde quer criar o contrato</h1>
+{% for parque in parques %}
+    <button><a class="btn btn-info" href="{% url 'PaymentManagement:contrato-create' id=parque.id %}">{{parque.nome}}</a></button>
+{% endfor %}
+<a class="btn btn-info btn-sm" href="{% url 'PaymentManagement:options' %}">Voltar à página principal</a>

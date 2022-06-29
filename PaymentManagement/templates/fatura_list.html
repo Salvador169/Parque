@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+    <body>
+        <table>
+            <tr>
+              <th>Nome da Empresa</th>
+              <th>Morada da Empresa</th>
+              <th>NIF da Empresa</th>
+              <th>NIF do Cliente</th>
+              <th>Total Pago</th>
+              <th>Reclamar</th>
+            </tr>
+        {% for fatura in object_list %}
+            <tr>
+                <td>{{fatura.nomeEmpresa}}</td>
+                <td>{{fatura.moradaEmpresa}}</td>
+                <td>{{fatura.nifEmpresa}}</td>
+                <td>{{fatura.clienteid.nif}}</td>
+                <td>{{fatura.pagamentoid.montante}}€</td>
+                <td><a class="btn btn-info btn-sm" href="{% url 'PaymentManagement:fatura-reclam' id=fatura.id %}">Reclamar Fatura</a></td>
+            </tr>
+        {% endfor %}
+    </body>
+    <a class="btn btn-info btn-sm" href="{% url 'PaymentManagement:options' %}">Voltar à página principal</a>
+</html>
