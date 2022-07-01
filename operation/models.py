@@ -132,4 +132,5 @@ class Fatura(models.Model):
 class Reclamacao(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     faturaid = models.ForeignKey(Fatura, models.CASCADE, db_column='FaturaID', blank=True, null=True)  # Field name made lowercase.
+    registo_movimentoid = models.ForeignKey(RegistoMovimento, models.CASCADE, db_column='Registo-movimentoID', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     reclamacao = models.CharField(db_column='Reclamacao', max_length=255, blank=True, null=True)  # Field name made lowercase.

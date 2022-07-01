@@ -21,7 +21,7 @@
                 {% for parque in parques %}
                 <div class="col-md-3 text-center">
                         <img class="h-75 border border-dark rounded p-4" height="150px" width="300px" src="static/main/img/{{ parque.foto }}">
-                        <h2><a href="/entrar_parque_form/{{ parque.id }}">{{ parque.nome }}</a></h2>
+                        <h2><a href="{% url 'operation:entrar_parque_form' parque.id %}">{{ parque.nome }}</a></h2>
                 </div>
                  {% endfor %}
             </div>

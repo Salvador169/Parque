@@ -3,10 +3,8 @@ import random
 from django.contrib import messages
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from django.views import View
-from django.views.generic import CreateView
 
-from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm, DesassociarLugarForm, ReclamacaoModelForm
+from .forms import EntrarParqueForm, SairParqueForm, AssociarLugarForm, DesassociarLugarForm, ReclamacaoForm, RegistoMovimentoModelForm
 from .models import RegistoMovimento, Parque, Zona, Lugar, Viatura, Pagamento, Reclamacao, Fatura
 
 
@@ -57,6 +55,9 @@ def sair_parque_form(request, parque_id):
         form = SairParqueForm(request.POST)
         if form.is_valid():
             v = Viatura.objects.filter(matricula=form.cleaned_data.get("matricula"))
+
+            if v.exists():
+                v.delete()
 
             messages.success(request, f"Saiu do parque com sucesso.")
             return redirect("operation:entrar_parque")
@@ -155,55 +156,54 @@ def desassociar_lugar(request, parque_id, zona_id):
                   context={"form": form, "parques": parques})
 
 
-def consultar_entradas(request, parque_id, fatura_id):
-    parques = Parque.objects.get(pk=parque_id)
-    fatura = Fatura.objects.get(id=fatura_id)
-    p = fatura.pagamentoid
-    v = p.viaturaid
-    registos = RegistoMovimento.objects.filter(matricula=v.matricula)
-
-    return render(request=request,
-                  template_name="main/consultar_entradas.html",
-                  context={"parques": parques, "fatura": fatura, "registos": registos})
-
-
-def fazer_reclamacao(request, parque_id, fatura_id):
+def reclamar_fatura(request, parque_id, fatura_id):
     parques = Parque.objects.get(pk=parque_id)
     fatura = Fatura.objects.get(id=fatura_id)
 
     if request.method == "POST":
-        form = ReclamacaoModelForm(request.POST)
+        form = ReclamacaoForm(fatura, request.POST)
         if form.is_valid():
             messages.success(request, f"Fez a reclamação com sucesso.")
 
-            reclamacao = form.save(commit=False)
-            reclamacao.faturaid = fatura
-            reclamacao.save()
+            rec = Reclamacao(faturaid=fatura)
+            rec.reclamacao = form.cleaned_data.get("reclamacao")
+            rec.registo_movimentoid = form.cleaned_data.get("registo")
+            rec.save()
 
-            return redirect("operation:consultar_entradas", parque_id=parque_id, fatura_id=fatura_id)
+            return redirect("operation:index", parque_id=parque_id)
     else:
-        form = ReclamacaoModelForm
+        form = ReclamacaoForm(fatura)
 
     return render(request=request,
-                  template_name="main/fazer_reclamacao.html",
+                  template_name="main/reclamar_fatura.html",
                   context={"form": form, "parques": parques, "fatura": fatura})
 
 
-def consultar_reclamacoes(request, parque_id, fatura_id):
+def processar_reclamacao(request, parque_id, reclamacao_id):
     parques = Parque.objects.get(pk=parque_id)
-    fatura = Fatura.objects.get(id=fatura_id)
-    p = fatura.pagamentoid
-    v = p.viaturaid
-    registos = RegistoMovimento.objects.filter(matricula=v.matricula)
+    reclamacao = Reclamacao.objects.get(id=reclamacao_id)
+    registo = reclamacao.registo_movimentoid
+    v = Viatura.objects.get(matricula=registo.matricula)
+    fatura = reclamacao.faturaid
+
+    if request.method == 'POST':
+        form = RegistoMovimentoModelForm(registo, request.POST)
+        if form.is_valid():
+
+                # fatura.delete()
+                registo.matricula = form.cleaned_data.get("matricula")
+                v.matricula = form.cleaned_data.get("matricula")
+                registo.data_de_entrada = form.cleaned_data.get("data_de_entrada")
+                registo.data_de_saida = form.cleaned_data.get("data_de_saida")
+                registo.provas = form.cleaned_data.get("provas")
+                registo.save()
+
+                # Criar nova fatura com dados novos de movimento
+
+                return redirect('operation:index', parque_id=parque_id)
+    else:
+        form = RegistoMovimentoModelForm(registo)
 
     return render(request=request,
-                  template_name="main/consultar_entradas.html",
-                  context={"parques": parques, "fatura": fatura, "registos": registos})
-
-class ReclamacaoListView(View):
-    template_name = 'reclamacao_list.html'
-    queryset = Reclamacao.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        context = {"object_list": self.queryset}
-        return render(request, self.template_name, context)
+              template_name="main/processar_reclamacao.html",
+              context={"parques": parques, "form": form, "reclamacao": reclamacao})

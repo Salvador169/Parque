@@ -15,8 +15,8 @@ urlpatterns = [
     path("desassociar_lugar/<int:parque_id>/<int:zona_id>/", views.desassociar_lugar, name="desassociar_lugar"),
 
     # path('reclamacao/', views.ReclamacaoListView.as_view(), name='reclamacao-list'), #consultar reclamacoes
-    path("consultar_entradas/<int:parque_id>/<int:fatura_id>/", views.consultar_entradas, name="consultar_entradas"), #reclamar fatura
-    path("fazer_reclamacao/<int:parque_id>/<int:fatura_id>/", views.fazer_reclamacao, name="fazer_reclamacao"),
-    path('consultar_reclamacoes/<int:parque_id>/<int:reclamacao_id>', views.consultar_reclamacoes, name="consultar_reclamacoes"), #cancelar fatura
+    # path("consultar_entradas/<int:parque_id>/<int:fatura_id>/", views.consultar_entradas, name="consultar_entradas"), #reclamar fatura
+    path("reclamar_fatura/<int:parque_id>/<int:fatura_id>/", views.reclamar_fatura, name="reclamar_fatura"),
+    path("processar_reclamacao/<int:parque_id>/<int:reclamacao_id>", views.processar_reclamacao, name="consultar_reclamacao"), #cancelar fatura
     # path('fatura/<int:id>/processar/', views.ProcessFaturaView.as_view(), name="processar_reclamacao"), #processar fatura
 ]

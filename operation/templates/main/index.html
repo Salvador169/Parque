@@ -90,13 +90,13 @@
         </div>
 
         {% for fatura in faturas %}
-        <a class="btn btn-primary" style="margin-top: 1em; margin-left: 1em; color: white" href="/consultar_entradas/{{ parque.id }}/{{ fatura.id }}">
+        <a class="btn btn-primary" style="margin-top: 1em; margin-left: 1em; color: white" href="/reclamar_fatura/{{ parque.id }}/{{ fatura.id }}">
             Reclamar de {{ fatura.nomeEmpresa }}
         </a>
         {% endfor %}
 
         {% for reclamacao in reclamacoes %}
-         <a class="btn btn-primary" style="margin-top: 1em; margin-left: 1em; color: white" href="fatura/{{ fatura.id }}/reclamar/">
+         <a class="btn btn-primary" style="margin-top: 1em; margin-left: 1em; color: white" href="/processar_reclamacao/{{ parque.id }}/{{ reclamacao.id }}">
                 Processar reclamação de {{ reclamacao.faturaid }}
          </a>
         {% endfor %}
